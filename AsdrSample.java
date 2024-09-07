@@ -270,7 +270,8 @@ public class AsdrSample {
   public static void main(String[] args) {
      AsdrSample parser = null;
      try {
-         args = new String[] {"exemplo1.txt"};         
+         //linha debug
+         //args = new String[] {"exemplo1.txt"};         
          if (args.length == 0)
             parser = new AsdrSample(new InputStreamReader(System.in));
          else 
