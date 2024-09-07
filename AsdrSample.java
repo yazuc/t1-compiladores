@@ -163,10 +163,9 @@ public class AsdrSample {
       } 
   }
    private void IfExpression() {
-      if (laToken == IDENT) {  // Check if the lookahead token is an identifier
+      if (laToken == IDENT) {  
          if (debug) System.out.println("Params --> IDENT");
-         verifica(IDENT);  // Recognize the first parameter
-
+         verifica(IDENT);  
          while (laToken == OP) { 
             verifica(OP); 
             
