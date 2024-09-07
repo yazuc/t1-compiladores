@@ -1,7 +1,11 @@
 {
+
+    define multiplica(a) { return a*b; }  
+    
     define fat(n) {
         if (n==1)
             return 1;                
         return n*fat(n-1);
     }
+
 }

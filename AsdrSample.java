@@ -92,13 +92,12 @@ public class AsdrSample {
         yyerror("esperado '{'");
    }
 
-  private void Bloco() {
-      if (debug) System.out.println("Bloco --> { Cmd }");
-      //if (laToken == '{') {
-         verifica('{');
-         Cmd();
-         verifica('}');
-      //}
+   private void Bloco() {
+      verifica('{');
+      while (laToken != '}') {
+          Cmd();  
+      }
+      verifica('}');
   }
 
   private void Cmd() {
@@ -125,7 +124,8 @@ public class AsdrSample {
             if (debug) System.out.println("Cmd --> if (E) Cmd RestoIF");
             verifica(IF);
             verifica('(');
-            E();
+            IfExpression();
+            //E();
             verifica(')');
             Cmd();
             RestoIF();
@@ -137,9 +137,7 @@ public class AsdrSample {
          verifica('(');
          Params();        // Lista de parâmetros
          verifica(')');
-         verifica('{');
-         Cmd();         // Corpo da função
-         verifica('}');
+         Bloco();         // Corpo da função
       } else if (laToken == RETURN) {
          if (debug) System.out.println("Cmd --> RETURN E ;");
          verifica(RETURN);
@@ -164,6 +162,25 @@ public class AsdrSample {
           }
       } 
   }
+   private void IfExpression() {
+      if (laToken == IDENT) {  // Check if the lookahead token is an identifier
+         if (debug) System.out.println("Params --> IDENT");
+         verifica(IDENT);  // Recognize the first parameter
+
+         while (laToken == OP) { 
+            verifica(OP); 
+            
+            if (laToken == NUM) {
+                  verifica(NUM);  
+                  if (debug) System.out.println("Param --> NUM");
+            } else if (laToken == IDENT) {
+                  verifica(IDENT);  
+                  if (debug) System.out.println("Param --> IDENT");
+            } 
+         }         
+      } 
+   }
+
 
    private void processarExpressao() {
       E();
@@ -183,16 +200,29 @@ public class AsdrSample {
 	   } else if (laToken == FI){
          if (debug) System.out.println("RestoIF -->  FI  ");
          verifica(FI); 
-         }
+      }
+      else if (ifSingular()){
+         if (debug) System.out.println("IF --> EXP  ");
+         Cmd();
+      }
       else yyerror("Esperado else ou fi");
-     }     
+   }     
 
-
+   private boolean ifSingular() {
+      return laToken == RETURN || laToken == IDENT || laToken == NUM;  
+  }
 
   private void E() {
       if (laToken == IDENT) {
          if (debug) System.out.println("E --> IDENT");
          verifica(IDENT);
+
+         if (laToken == '(') {  
+            if (debug) System.out.println("E --> FUNCTION CALL");
+            verifica('(');  
+            processarExpressao();  
+            verifica(')');  
+        }
 	   }
       else if (laToken == NUM) {
          if (debug) System.out.println("E --> NUM");
@@ -271,7 +301,7 @@ public class AsdrSample {
      AsdrSample parser = null;
      try {
          //linha debug
-         //args = new String[] {"exemplo1.txt"};         
+         args = new String[] {"Exemplos/exemplo4.txt"};         
          if (args.length == 0)
             parser = new AsdrSample(new InputStreamReader(System.in));
          else 
