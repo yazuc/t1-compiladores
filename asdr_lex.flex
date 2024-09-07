@@ -36,7 +36,7 @@ WHITE_SPACE_CHAR=[\n\r\ \t\b\012]
 [:jletter:][:jletterdigit:]* { return AsdrSample.IDENT; }  
 
 [0-9]+ 	{ return AsdrSample.NUM; }
-
+"," |
 "{" |
 "}" |
 ";" |

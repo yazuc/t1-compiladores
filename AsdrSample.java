@@ -134,7 +134,7 @@ public class AsdrSample {
          if (debug) System.out.println("Cmd --> define IDENT ( Params ) { Bloco }");
          verifica(DEFINE);
          verifica(IDENT); // Nome da função
-         verifica('(');
+         verifica('(');         
          Params();        // Lista de parâmetros
          verifica(')');
          Bloco();         // Corpo da função
