@@ -11,6 +11,12 @@ public class AsdrSample {
   public static final int FI	 = 305;
   public static final int ELSE = 306;
   public static final int OP = 307;
+  public static final int LE = 308;
+  public static final int ASSIGN = 309;
+  public static final int FOR = 310;
+  public static final int PRINT = 311;
+  public static final int RETURN = 312;
+  public static final int DEFINE = 313;  
 
     public static final String tokenList[] = 
       {"IDENT",
@@ -18,7 +24,14 @@ public class AsdrSample {
 		 "WHILE", 
 		 "IF", 
 		 "FI",
-		 "ELSE"  };
+		 "ELSE",
+       "OP",
+       "LE",
+       "ASSIGN",
+       "FOR",
+       "PRINT",
+       "RETURN",
+       "DEFINE"  };
 
                                       
   /* referencia ao objeto Scanner gerado pelo JFLEX */
@@ -108,18 +121,57 @@ public class AsdrSample {
             E();
 		      verifica(';');
 	   }
-    else if (laToken == IF) {
-         if (debug) System.out.println("Cmd --> if (E) Cmd RestoIF");
-         verifica(IF);
+      else if (laToken == IF) {
+            if (debug) System.out.println("Cmd --> if (E) Cmd RestoIF");
+            verifica(IF);
+            verifica('(');
+            E();
+            verifica(')');
+            Cmd();
+            RestoIF();
+         }
+      else if (laToken == DEFINE) {
+         if (debug) System.out.println("Cmd --> define IDENT ( Params ) { Bloco }");
+         verifica(DEFINE);
+         verifica(IDENT); // Nome da função
          verifica('(');
-  		   E();
+         Params();        // Lista de parâmetros
          verifica(')');
-         Cmd();
-         RestoIF();
-	   }
- 	else yyerror("Esperado {, if, while ou identificador");
+         verifica('{');
+         Cmd();         // Corpo da função
+         verifica('}');
+      } else if (laToken == RETURN) {
+         if (debug) System.out.println("Cmd --> RETURN E ;");
+         verifica(RETURN);
+         processarExpressao();
+         verifica(';');
+      } else if (laToken == PRINT) {
+            if (debug) System.out.println("Cmd --> PRINT E ;");
+            verifica(PRINT);
+            E();
+            verifica(';');
+      } 
+      else yyerror("Esperado {, if, while ou identificador");
    }
 
+   private void Params() {
+      if (laToken == IDENT) {
+          if (debug) System.out.println("Params --> IDENT");
+          verifica(IDENT);  // Reconhece o primeiro parâmetro
+          while (laToken == ',') {
+              verifica(',');  // Reconhece a vírgula separadora
+              verifica(IDENT);  // Reconhece o próximo parâmetro
+          }
+      } 
+  }
+
+   private void processarExpressao() {
+      E();
+      while (laToken == OP) { 
+         verifica(OP); 
+         E(); 
+      }
+   }
 
    private void RestoIF() {
        if (laToken == ELSE) {
@@ -145,6 +197,10 @@ public class AsdrSample {
       else if (laToken == NUM) {
          if (debug) System.out.println("E --> NUM");
          verifica(NUM);
+	   }
+      else if (laToken == OP) {
+         if (debug) System.out.println("E --> OP");
+         verifica(OP);
 	   }
       else if (laToken == '(') {
          if (debug) System.out.println("E --> ( E )");
@@ -214,6 +270,7 @@ public class AsdrSample {
   public static void main(String[] args) {
      AsdrSample parser = null;
      try {
+         args = new String[] {"exemplo1.txt"};         
          if (args.length == 0)
             parser = new AsdrSample(new InputStreamReader(System.in));
          else 

@@ -1,0 +1,3 @@
+{   
+    define multiplica(a) { return a*b; }
+}
