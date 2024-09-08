@@ -12,11 +12,13 @@ public class AsdrSample {
   public static final int ELSE = 306;
   public static final int OP = 307;
   public static final int LE = 308;
-  public static final int ASSIGN = 309;
-  public static final int FOR = 310;
-  public static final int PRINT = 311;
-  public static final int RETURN = 312;
-  public static final int DEFINE = 313;  
+  public static final int FOR = 309;
+  public static final int PRINT = 310;
+  public static final int RETURN = 311;
+  public static final int DEFINE = 312;
+  public static final int STRING = 313;
+  public static final int PLUS = 313;
+  public static final int MINUS = 313;
 
     public static final String tokenList[] = 
       {"IDENT",
@@ -27,11 +29,13 @@ public class AsdrSample {
 		 "ELSE",
        "OP",
        "LE",
-       "ASSIGN",
        "FOR",
        "PRINT",
        "RETURN",
-       "DEFINE"  };
+       "DEFINE",
+       "FOR",
+       "++",
+       "--"  };
 
                                       
   /* referencia ao objeto Scanner gerado pelo JFLEX */
@@ -118,6 +122,10 @@ public class AsdrSample {
             verifica(IDENT);  
             verifica('='); 
             E();
+            while(laToken == OP){
+               verifica(OP);
+               E();
+            }
 		      verifica(';');
 	   }
       else if (laToken == IF) {
@@ -149,8 +157,55 @@ public class AsdrSample {
             E();
             verifica(';');
       } 
+      else if (laToken == FOR) {
+         if (debug) System.out.println("Cmd --> FOR (init; cond; incr ) Cmd");
+         verifica(FOR);    
+         verifica('(');           
+         init();           
+         verifica(';');         
+         cond();           
+         verifica(';');          
+         incr();           
+         verifica(')');             
+         Cmd();            
+	   }
       else yyerror("Esperado {, if, while ou identificador");
    }
+
+   void init() {
+      if (laToken == IDENT) {  
+          verifica(IDENT);  
+          if (laToken == '=') {  
+              verifica('=');  
+              E();  
+          } 
+      } 
+   }
+
+   void incr() {
+      if (laToken == IDENT) {  // Se for uma variável
+          verifica(IDENT);  // Verifica o nome da variável
+  
+          // Verifica operadores de incremento/decremento
+          if (laToken == '+') {  
+              verifica('+');  // Verifica '++' ou '--'     
+              verifica('+');         
+          } 
+          if(laToken == '-'){
+            verifica('-');  // Verifica '++' ou '--'     
+            verifica('-');         
+          }
+      } 
+   }
+    
+   void cond() {
+      E();   
+      if (laToken == OP || laToken == LE ) {
+          verifica(laToken);            
+          E();  
+      } 
+   }
+  
 
    private void Params() {
       if (laToken == IDENT) {
@@ -179,7 +234,6 @@ public class AsdrSample {
          }         
       } 
    }
-
 
    private void processarExpressao() {
       E();
@@ -300,7 +354,7 @@ public class AsdrSample {
      AsdrSample parser = null;
      try {
          //linha debug
-         args = new String[] {"Exemplos/exemplo4.txt"};         
+         args = new String[] {"Exemplos/exemplo3.txt"};         
          if (args.length == 0)
             parser = new AsdrSample(new InputStreamReader(System.in));
          else 
@@ -320,15 +374,6 @@ public class AsdrSample {
         catch (java.io.FileNotFoundException e) {
           System.out.println("File not found : \""+args[0]+"\"");
         }
-//        catch (java.io.IOException e) {
-//          System.out.println("IO error scanning file \""+args[0]+"\"");
-//          System.out.println(e);
-//        }
-//        catch (Exception e) {
-//          System.out.println("Unexpected exception:");
-//          e.printStackTrace();
-//      }
-    
   }
   
 }

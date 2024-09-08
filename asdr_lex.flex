@@ -52,7 +52,9 @@ WHITE_SPACE_CHAR=[\n\r\ \t\b\012]
 "/"     { return AsdrSample.OP; } 
 
 "<="        { return AsdrSample.LE; }
-"="         { return AsdrSample.ASSIGN; }
+
+\"([^\"\n\r\\]|\\.)*\" { return AsdrSample.STRING; }
+
 
 /* Números (double) */
 {NUMBER}    { return AsdrSample.NUM; }
