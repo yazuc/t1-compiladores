@@ -368,7 +368,7 @@ public class AsdrSample {
      AsdrSample parser = null;
      try {
          //linha debug
-         args = new String[] {"Exemplos/exemplo4.txt"};         
+         //args = new String[] {"Exemplos/exemplo4.txt"};         
          if (args.length == 0)
             parser = new AsdrSample(new InputStreamReader(System.in));
          else 
