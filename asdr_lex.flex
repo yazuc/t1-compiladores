@@ -32,6 +32,8 @@ WHITE_SPACE_CHAR=[\n\r\ \t\b\012]
 "print"     { return AsdrSample.PRINT; }
 "return"    { return AsdrSample.RETURN; }
 "define"    { return AsdrSample.DEFINE; }
+"++"    { return AsdrSample.PLUS; }
+"--"    { return AsdrSample.MINUS; }
 
 [:jletter:][:jletterdigit:]* { return AsdrSample.IDENT; }  
 
@@ -42,7 +44,6 @@ WHITE_SPACE_CHAR=[\n\r\ \t\b\012]
 ";" |
 "(" |
 ")" |
-"+" |
 "="    	{ return yytext().charAt(0); } 
 
 "=="|
@@ -51,7 +52,9 @@ WHITE_SPACE_CHAR=[\n\r\ \t\b\012]
 "*" |
 "/"     { return AsdrSample.OP; } 
 
-"<="        { return AsdrSample.LE; }
+"<=" |
+">=" |
+"=="       { return AsdrSample.LE; }
 
 \"([^\"\n\r\\]|\\.)*\" { return AsdrSample.STRING; }
 

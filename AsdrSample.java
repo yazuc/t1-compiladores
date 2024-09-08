@@ -17,8 +17,8 @@ public class AsdrSample {
   public static final int RETURN = 311;
   public static final int DEFINE = 312;
   public static final int STRING = 313;
-  public static final int PLUS = 313;
-  public static final int MINUS = 313;
+  public static final int PLUS = 314;
+  public static final int MINUS = 315;
 
     public static final String tokenList[] = 
       {"IDENT",
@@ -36,7 +36,7 @@ public class AsdrSample {
        "STRING",
        "FOR",
        "++",
-       "--"  };
+       "--" };
 
                                       
   /* referencia ao objeto Scanner gerado pelo JFLEX */
@@ -203,13 +203,11 @@ public class AsdrSample {
           verifica(IDENT);  // Verifica o nome da variável
   
           // Verifica operadores de incremento/decremento
-          if (laToken == '+') {  
-              verifica('+');  // Verifica '++' ou '--'     
-              verifica('+');         
+          if (laToken == PLUS) {  
+              verifica(PLUS);  // Verifica '++' ou '--'     
           } 
-          if(laToken == '-'){
-            verifica('-');  // Verifica '++' ou '--'     
-            verifica('-');         
+          if(laToken == MINUS){
+            verifica(MINUS);  // Verifica '++' ou '--'     
           }
       } 
    }
@@ -370,7 +368,7 @@ public class AsdrSample {
      AsdrSample parser = null;
      try {
          //linha debug
-         //args = new String[] {"Exemplos/exemplo3.txt"};         
+         args = new String[] {"Exemplos/exemplo4.txt"};         
          if (args.length == 0)
             parser = new AsdrSample(new InputStreamReader(System.in));
          else 
