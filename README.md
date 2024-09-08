@@ -1,6 +1,6 @@
 para compilar
 jflex .\asdr_lex.flex
-javac .\AsdrSample.java
+javac .\Parser.java
 
 modo de usar
-java AsdrSample .\programa.txt
+java Parser .\programa.txt

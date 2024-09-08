@@ -1,0 +1,6 @@
+$TRACE_ON
+    { 
+        define multiplica(a,b) { return a*b }
+    }
+
+

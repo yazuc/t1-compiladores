@@ -1,6 +1,6 @@
 import java.io.*;
 
-public class AsdrSample {
+public class Parser {
 
   private static final int BASE_TOKEN_NUM = 301;
   
@@ -47,45 +47,9 @@ public class AsdrSample {
   private static int laToken;
   private boolean debug;
 
-  
-  /* construtor da classe */
-  public AsdrSample (Reader r) {
+  public Parser (Reader r) {
       lexer = new Yylex (r, this);
   }
-
-  /***** Gramática original 
-  Prog -->  Bloco
-
-  Bloco --> { Cmd }
-
-  Cmd --> Bloco
-      | while ( E ) Cmd
-      | ident = E ;
-      | if ( E ) Cmd fi
-      | if ( E ) Cmd else Cmd fi
-
-  E --> IDENT
-   | NUM
-   | ( E )
-***/  
-
-  /***** Gramática 'fatorada' 
-  Prog -->  Bloco
-
-  Bloco --> { Cmd }
-
-  Cmd --> Bloco
-      | while ( E ) Cmd
-      | ident = E ;
-      | if ( E ) Cmd RestoIf   // 'fatorada à esquerda'
-      
-   RestoIf --> fi
-            | else Cmd fi
-
-  E --> IDENT
-   | NUM
-   | ( E )
-***/ 
 
   private void Prog() {
    
@@ -365,14 +329,14 @@ public class AsdrSample {
    *               the scanner on.
    */
   public static void main(String[] args) {
-     AsdrSample parser = null;
+     Parser parser = null;
      try {
          //linha debug
          //args = new String[] {"Exemplos/exemplo4.txt"};         
          if (args.length == 0)
-            parser = new AsdrSample(new InputStreamReader(System.in));
+            parser = new Parser(new InputStreamReader(System.in));
          else 
-            parser = new  AsdrSample( new java.io.FileReader(args[0]));
+            parser = new  Parser( new java.io.FileReader(args[0]));
 
           parser.setDebug(false);
           laToken = parser.yylex();          

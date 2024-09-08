@@ -1,9 +1,9 @@
 %%
 
 %{
-  private AsdrSample yyparser;
+  private Parser yyparser;
 
-  public Yylex(java.io.Reader r, AsdrSample yyparser) {
+  public Yylex(java.io.Reader r, Parser yyparser) {
     this(r);
     this.yyparser = yyparser;
   }
@@ -24,20 +24,20 @@ WHITE_SPACE_CHAR=[\n\r\ \t\b\012]
 "$TRACE_ON"   { yyparser.setDebug(true); }
 "$TRACE_OFF"  { yyparser.setDebug(false); }
 
-"while"	 	{ return AsdrSample.WHILE; }
-"if"		{ return AsdrSample.IF; }
-"else"		{ return AsdrSample.ELSE; }
-"fi"		{ return AsdrSample.FI; }
-"for"       { return AsdrSample.FOR; }
-"print"     { return AsdrSample.PRINT; }
-"return"    { return AsdrSample.RETURN; }
-"define"    { return AsdrSample.DEFINE; }
-"++"    { return AsdrSample.PLUS; }
-"--"    { return AsdrSample.MINUS; }
+"while"	 	{ return Parser.WHILE; }
+"if"		{ return Parser.IF; }
+"else"		{ return Parser.ELSE; }
+"fi"		{ return Parser.FI; }
+"for"       { return Parser.FOR; }
+"print"     { return Parser.PRINT; }
+"return"    { return Parser.RETURN; }
+"define"    { return Parser.DEFINE; }
+"++"    { return Parser.PLUS; }
+"--"    { return Parser.MINUS; }
 
-[:jletter:][:jletterdigit:]* { return AsdrSample.IDENT; }  
+[:jletter:][:jletterdigit:]* { return Parser.IDENT; }  
 
-[0-9]+ 	{ return AsdrSample.NUM; }
+[0-9]+ 	{ return Parser.NUM; }
 "," |
 "{" |
 "}" |
@@ -50,17 +50,17 @@ WHITE_SPACE_CHAR=[\n\r\ \t\b\012]
 "+" |
 "-" |
 "*" |
-"/"     { return AsdrSample.OP; } 
+"/"     { return Parser.OP; } 
 
 "<=" |
 ">=" |
-"=="       { return AsdrSample.LE; }
+"=="       { return Parser.LE; }
 
-\"([^\"\n\r\\]|\\.)*\" { return AsdrSample.STRING; }
+\"([^\"\n\r\\]|\\.)*\" { return Parser.STRING; }
 
 
 /* Números (double) */
-{NUMBER}    { return AsdrSample.NUM; }
+{NUMBER}    { return Parser.NUM; }
 
 
 {WHITE_SPACE_CHAR}+ { }
