@@ -33,6 +33,7 @@ public class AsdrSample {
        "PRINT",
        "RETURN",
        "DEFINE",
+       "STRING",
        "FOR",
        "++",
        "--"  };
@@ -126,14 +127,14 @@ public class AsdrSample {
                verifica(OP);
                E();
             }
-		      verifica(';');
+            if(laToken == ';')
+		         verifica(';');
 	   }
       else if (laToken == IF) {
             if (debug) System.out.println("Cmd --> if (E) Cmd RestoIF");
             verifica(IF);
             verifica('(');
             IfExpression();
-            //E();
             verifica(')');
             Cmd();
             RestoIF();
@@ -150,12 +151,27 @@ public class AsdrSample {
          if (debug) System.out.println("Cmd --> RETURN E ;");
          verifica(RETURN);
          processarExpressao();
-         verifica(';');
+
+         if(laToken == ';')
+            verifica(';');
+
       } else if (laToken == PRINT) {
             if (debug) System.out.println("Cmd --> PRINT E ;");
             verifica(PRINT);
-            E();
-            verifica(';');
+            if(laToken == STRING || laToken == IDENT){
+               verifica(laToken);
+               while(laToken == ','){
+                  verifica(',');
+                  if(laToken == IDENT){
+                     verifica(IDENT);
+                  }
+                  if(laToken == STRING){
+                     verifica(STRING);               
+                  }
+               }               
+            }            
+            if(laToken == ';')
+               verifica(';');
       } 
       else if (laToken == FOR) {
          if (debug) System.out.println("Cmd --> FOR (init; cond; incr ) Cmd");
@@ -271,7 +287,7 @@ public class AsdrSample {
          verifica(IDENT);
 
          if (laToken == '(') {  
-            if (debug) System.out.println("E --> FUNCTION CALL");
+            if (debug) System.out.println("E --> FUNCTION CALL(ident)");
             verifica('(');  
             processarExpressao();  
             verifica(')');  
@@ -354,7 +370,7 @@ public class AsdrSample {
      AsdrSample parser = null;
      try {
          //linha debug
-         args = new String[] {"Exemplos/exemplo3.txt"};         
+         //args = new String[] {"Exemplos/exemplo3.txt"};         
          if (args.length == 0)
             parser = new AsdrSample(new InputStreamReader(System.in));
          else 
