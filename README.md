@@ -1,3 +1,8 @@
+//Grupo T1-07
+//Jean Lucca - 18203035 - jean.uchaki@edu.pucrs.br
+//Leonardo Rubert - 19180465 - leonardo.rubert@edu.pucrs.br
+//Lucas Maciel - -
+
 para compilar
 jflex .\asdr_lex.flex
 javac .\Parser.java
