@@ -16,7 +16,7 @@
 %char
 
 DIGIT = [0-9]
-NUMBER = {DIGIT}+("."{DIGIT}+)?
+NUMBER = [0-9]+(\.[0-9]{1,3})?
 WHITE_SPACE_CHAR=[\n\r\ \t\b\012]
 
 %%
