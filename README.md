@@ -5,7 +5,7 @@
 
 para compilar
 jflex .\asdr_lex.flex
-javac .\*.java
+javac .\Parser.java
 
 modo de usar
 java Parser .\programa.txt
